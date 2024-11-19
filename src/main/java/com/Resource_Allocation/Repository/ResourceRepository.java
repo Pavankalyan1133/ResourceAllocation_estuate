@@ -9,10 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface ResourceRepository extends JpaRepository<Resource,Long> {
+public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
-    List<Resource> findBySkillsInAndExperienceLessThanEqual(List<String> skills, int maxExperience);
-
-    List<Resource> findBySkillsIn(List<String> skills);
 }
-

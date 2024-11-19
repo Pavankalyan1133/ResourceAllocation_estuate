@@ -1,52 +1,44 @@
 package com.Resource_Allocation.Controller;
 
+import com.Resource_Allocation.Entity.Resource;
 import com.Resource_Allocation.ResourceDTO.ResourceDTO;
 import com.Resource_Allocation.service.ResourceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController {
-
-
-    private static final Logger logger = Logger.getLogger(ResourceController.class.getName());
-
     @Autowired
-    private ResourceService resourceService;
+    private ResourceService service;
 
-    /*@GetMapping("/microservice")
-    public List<String> getResourcesForMicroservice(@RequestParam List<String> skills) {
-        logger.info("GET /microservice called with skills: " + skills);
-        return resourceService.getResourcesForMicroservice(skills);
+    @GetMapping
+    public List<Resource> getAllResources() {
+        return service.getAllResources();
     }
 
-    @GetMapping("/cloud")
-    public List<String> getResourcesForCloudProject(@RequestParam List<String> skills, @RequestParam int maxExperience) {
-        logger.info("GET /cloud called with skills: " + skills + ", maxExperience: " + maxExperience);
-        return resourceService.getResourcesForCloudProject(skills, maxExperience);
-    }*/
-
-    @GetMapping("/microservice")
-    public List<String> getResourcesForMicroservice(@RequestParam(required = false, defaultValue = "") List<String> skills) {
-        return resourceService.getResourcesForMicroservice(skills);
+    @GetMapping("/{id}")
+    public Resource getResourceById(@PathVariable Long id) {
+        return service.getResourceById(id);
     }
 
-    @GetMapping("/cloud")
-    public List<String> getResourcesForCloudProject(
-            @RequestParam(required = false, defaultValue = "") List<String> skills,
-            @RequestParam(required = false, defaultValue = "10") int maxExperience) {
-        return resourceService.getResourcesForCloudProject(skills, maxExperience);
+    @PostMapping
+    public Resource addResource(@RequestBody ResourceDTO resourceDTO) {
+        return service.addResource(resourceDTO);
     }
 
+    @PutMapping("/{id}")
+    public Resource updateResource(@PathVariable Long id, @RequestBody ResourceDTO resourceDTO) {
+        return service.updateResource(id, resourceDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteResource(@PathVariable Long id) {
+        service.deleteResource(id);
+        return "Resource with ID " + id + " has been deleted.";
+    }
 }
-
-
-
-

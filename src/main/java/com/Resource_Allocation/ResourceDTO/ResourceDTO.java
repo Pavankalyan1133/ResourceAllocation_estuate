@@ -1,16 +1,36 @@
 package com.Resource_Allocation.ResourceDTO;
 
-import lombok.Data;
 
-import java.util.List;
 
-@Data
+
 public class ResourceDTO {
-    private Long ResourceID;
     private String resourceName;
     private int experience;
+    private String skills;
 
-    private List<String> skills;
+    public String getResourceName() {
+        return resourceName;
+    }
 
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
 
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
 }
+
+

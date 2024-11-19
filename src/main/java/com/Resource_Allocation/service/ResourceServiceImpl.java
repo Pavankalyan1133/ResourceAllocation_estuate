@@ -12,23 +12,42 @@ import java.util.stream.Collectors;
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
-    @Autowired
-    private ResourceRepository resourceRepository;
 
-   @Override
-    public List<String> getResourcesForMicroservice(List<String> skills) {
-        List<Resource> resources = resourceRepository.findBySkillsIn(skills);
-        return resources.stream()
-                .map(Resource::getResourceName)
-                .collect(Collectors.toList());
+        @Autowired
+        private ResourceRepository repository;
+
+        @Override
+        public List<Resource> getAllResources() {
+            return repository.findAll();
+        }
+
+        @Override
+        public Resource getResourceById(Long id) {
+            return repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Resource not found with id: " + id));
+        }
+
+        @Override
+        public Resource addResource(ResourceDTO resourceDTO) {
+            Resource resource = new Resource();
+            resource.setResourceName(resourceDTO.getResourceName());
+            resource.setExperience(resourceDTO.getExperience());
+            resource.setSkills(resourceDTO.getSkills());
+            return repository.save(resource);
+        }
+
+        @Override
+        public Resource updateResource(Long id, ResourceDTO resourceDTO) {
+            Resource resource = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Resource not found with id: " + id));
+            resource.setResourceName(resourceDTO.getResourceName());
+            resource.setExperience(resourceDTO.getExperience());
+            resource.setSkills(resourceDTO.getSkills());
+            return repository.save(resource);
+        }
+
+        @Override
+        public void deleteResource(Long id) {
+            repository.deleteById(id);
+        }
     }
-    @Override
-    public List<String> getResourcesForCloudProject(List<String> skills, int maxExperience) {
-        List<Resource> resources = resourceRepository.findBySkillsInAndExperienceLessThanEqual(skills, maxExperience);
-        return resources.stream()
-                .map(Resource::getResourceName)
-                .collect(Collectors.toList());
-    }
-
-}
-
